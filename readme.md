@@ -1,50 +1,134 @@
-# An Enhancement in Psychiatric Disorder Detection: A Roadmap in Brain-Computer Interface (BCI) using Graph Neural Networks (GNN)
+This project provides a graph-based structure for representing EEG data, leveraging node features, edge indices, and edge attributes. The graphs are constructed to enable analysis using Graph Neural Networks (GNNs) such as GCN, GAT, and GraphSAGE.
 
-## Overview
+## Graph Structure Overview
 
-This project aims to enhance the detection of psychiatric disorders using Graph Neural Networks (GNN) on EEG data. Traditional machine learning models like LSTM and CNN have shown poor performance in multi-class classification tasks in this domain. By employing GNN, this project achieves a significant improvement in accuracy.
+For each subject, the EEG data is structured as a graph with nodes, edges, and features. Below is the graph information for one subject:
 
-## Dataset
+- **Number of Nodes:** 19
+- **Number of Edges:** 171
+- **Node Feature Shape:** [19, 6]
+- **Edge Index Shape:** [2, 171]
+- **Edge Attribute Shape:** [171, 6]
+- **Graph Label:** 2
 
-The dataset used for this project is the EEG data from Kaggle given my Mentor Dr. Sriparna Saha https://www.kaggle.com/datasets/shashwatwork/eeg-psychiatric-disorders-dataset . It includes various features extracted from EEG signals and corresponding labels for different psychiatric disorders.
+### Detailed Components
 
-## Key Results
+- **Nodes** represent EEG channels, with each node containing 6 features corresponding to specific frequency bands.
+- **Edges** connect pairs of EEG channels and capture inter-channel coherence as edge attributes.
+- **Edge Attributes** have a shape of `[171, 6]`, with each edge attribute containing 6 values, representing coherence values across bands.
 
-- Overall classification accuracy of **92%** (±5%) across seven categories of psychiatric disorders.
+## Models
 
-### Training Progress
+This project includes three GNN models for graph classification tasks:
+1. **GCN (Graph Convolutional Network)**
+2. **GAT (Graph Attention Network)**
+3. **GraphSAGE**
 
-The model was trained for 200 epochs with the following notable results:
+## Results
 
-- **Epoch 10:** Loss: 1.7307, Accuracy: 0.3608
-- **Epoch 50:** Loss: 1.2313, Accuracy: 0.5471
-- **Epoch 200:** Loss: 0.2799, Accuracy: 0.9196
+### GCN Model
 
-### Classification Report for Main Disorders
+- **Best Train Accuracy:** 68.48%
+- **Best Test Accuracy:** 52.27%
+- **Classification Report (Train)**:
+  
+  | Disorder                        | Precision | Recall | F1-score |
+  |---------------------------------|-----------|--------|----------|
+  | Addictive disorder              | 0.51      | 0.73   | 0.60     |
+  | Anxiety disorder                | 0.87      | 0.51   | 0.64     |
+  | Healthy control                 | 0.68      | 0.65   | 0.67     |
+  | Mood disorder                   | 0.42      | 0.74   | 0.53     |
+  | Obsessive compulsive disorder   | 0.96      | 0.35   | 0.51     |
+  | Schizophrenia                   | 0.62      | 0.67   | 0.64     |
+  | Trauma and stress related disorder | 0.83   | 0.65   | 0.73     |
+  
+  **Overall Accuracy (Train):** 61%
 
-The classification report for the main disorders includes:
+- **Classification Report (Test)**:
+  
+  | Disorder                        | Precision | Recall | F1-score |
+  |---------------------------------|-----------|--------|----------|
+  | Addictive disorder              | 0.28      | 0.52   | 0.36     |
+  | Anxiety disorder                | 0.70      | 0.47   | 0.56     |
+  | Healthy control                 | 0.53      | 0.58   | 0.55     |
+  | Mood disorder                   | 0.24      | 0.41   | 0.30     |
+  | Obsessive compulsive disorder   | 1.00      | 0.22   | 0.36     |
+  | Schizophrenia                   | 0.52      | 0.55   | 0.53     |
+  | Trauma and stress related disorder | 0.71   | 0.42   | 0.53     |
+  
+  **Overall Accuracy (Test):** 45%
 
-| Disorder                           | Precision | Recall   | F1-Score | Support |
-| ---------------------------------- | --------- | -------- | -------- | ------- |
-| Addictive disorder                 | 0.82      | 0.98     | 0.89     | 186     |
-| Anxiety disorder                   | 0.94      | 0.93     | 0.93     | 107     |
-| Healthy control                    | 0.90      | 0.94     | 0.92     | 95      |
-| Mood disorder                      | 0.97      | 0.94     | 0.96     | 266     |
-| Obsessive compulsive disorder      | 0.87      | 0.87     | 0.87     | 46      |
-| Schizophrenia                      | 0.98      | 0.97     | 0.98     | 117     |
-| Trauma and stress-related disorder | 0.95      | 0.73     | 0.83     | 128     |
-| **Accuracy**                       | **0.92**  |          |          | 945     |
-| **Macro Avg**                      | **0.92**  | **0.91** | **0.91** | 945     |
-| **Weighted Avg**                   | **0.92**  | **0.92** | **0.92** | 945     |
+### GraphSAGE Model
 
-## Installation
+- **Best Train Accuracy:** 94.16%
+- **Best Test Accuracy:** 71.31%
+- **Classification Report (Train)**:
 
-1. Clone the repository:
-   git clone https://github.com/sarman12/Graph-neural-network.git
-   cd your_repository
+  | Disorder                        | Precision | Recall | F1-score |
+  |---------------------------------|-----------|--------|----------|
+  | Addictive disorder              | 0.87      | 0.94   | 0.90     |
+  | Anxiety disorder                | 0.94      | 0.85   | 0.89     |
+  | Healthy control                 | 0.83      | 0.95   | 0.88     |
+  | Mood disorder                   | 0.93      | 0.85   | 0.89     |
+  | Obsessive compulsive disorder   | 0.97      | 0.93   | 0.95     |
+  | Schizophrenia                   | 0.92      | 0.95   | 0.94     |
+  | Trauma and stress related disorder | 0.95   | 0.92   | 0.93     |
+  
+  **Overall Accuracy (Train):** 91%
 
-2. Install the following dependencies:
-   pip install torch torch_geometric pandas seaborn matplotlib scikit-learn
+- **Classification Report (Test)**:
 
-3. Run the file:
-   python gnn_model.py
+  | Disorder                        | Precision | Recall | F1-score |
+  |---------------------------------|-----------|--------|----------|
+  | Addictive disorder              | 0.64      | 0.68   | 0.66     |
+  | Anxiety disorder                | 0.73      | 0.68   | 0.71     |
+  | Healthy control                 | 0.63      | 0.78   | 0.70     |
+  | Mood disorder                   | 0.48      | 0.34   | 0.40     |
+  | Obsessive compulsive disorder   | 0.88      | 0.83   | 0.86     |
+  | Schizophrenia                   | 0.70      | 0.83   | 0.76     |
+  | Trauma and stress related disorder | 0.72   | 0.64   | 0.68     |
+  
+  **Overall Accuracy (Test):** 69%
+
+### GIN Model
+
+- **Best Train Accuracy:** 95.55%
+- **Best Test Accuracy:** 71.02%
+- **Classification Report (Train)**:
+  *(Please include train classification report details if available)*
+
+- **Classification Report (Test)**:
+  *(Please include test classification report details if available)*
+
+## Early Stopping and Model Selection
+
+Each model utilized early stopping to prevent overfitting, and the final test accuracy was recorded after early stopping was triggered.
+
+## Conclusion
+
+GraphSAGE performed the best on this EEG classification task, achieving a test accuracy of 71.31% and strong F1-scores across various psychiatric disorder categories. This suggests that GraphSAGE’s sampling-based approach may be more effective for this EEG dataset compared to GCN and GIN.
+
+## Future Work
+
+1. **Hyperparameter Tuning**: Explore different learning rates, batch sizes, and hidden dimensions.
+2. **Advanced Architectures**: Experiment with more advanced GNN architectures or attention-based models.
+3. **Feature Engineering**: Further explore feature extraction from EEG signals for improved classification.
+
+## How to Run
+
+1. Clone the repository.
+2. Install required dependencies.
+3. Execute the training script for the desired model.
+4. Monitor performance metrics and visualize classification reports for each model.
+
+## Dependencies
+
+- PyTorch
+- PyTorch Geometric
+- scikit-learn
+- numpy
+- pandas
+
+## License
+
+This project is licensed under the MIT License. See the `LICENSE` file for more information.
