@@ -21,8 +21,9 @@ For each subject, the EEG data is structured as a graph with nodes, edges, and f
 
 This project includes three GNN models for graph classification tasks:
 1. **GCN (Graph Convolutional Network)**
-2. **GAT (Graph Attention Network)**
-3. **GraphSAGE**
+2. **GraphSAGE**
+3. **GIN (Graph Isomorphism Network)**
+
 
 ## Results
 
@@ -90,15 +91,43 @@ This project includes three GNN models for graph classification tasks:
   
   **Overall Accuracy (Test):** 69%
 
-### GIN Model
+### GIN Model Performance
 
-- **Best Train Accuracy:** 95.55%
-- **Best Test Accuracy:** 71.02%
-- **Classification Report (Train)**:
-  *(Please include train classification report details if available)*
+- **Best Train Accuracy:** 99.39%
+- **Best Test Accuracy:** 78.98%
 
-- **Classification Report (Test)**:
-  *(Please include test classification report details if available)*
+#### GIN Train Classification Report
+
+| Disorder                           | Precision | Recall | F1-Score | Support |
+|------------------------------------|-----------|--------|----------|---------|
+| Addictive disorder                 | 0.96      | 1.00   | 0.98     | 218     |
+| Anxiety disorder                   | 1.00      | 1.00   | 1.00     | 219     |
+| Healthy control                    | 1.00      | 0.99   | 1.00     | 208     |
+| Mood disorder                      | 0.98      | 0.98   | 0.98     | 216     |
+| Obsessive compulsive disorder      | 1.00      | 0.97   | 0.99     | 208     |
+| Schizophrenia                      | 0.99      | 0.99   | 0.99     | 200     |
+| Trauma and stress related disorder | 1.00      | 1.00   | 1.00     | 203     |
+
+- **Overall Train Accuracy:** 99%
+- **Macro Avg:** Precision: 0.99, Recall: 0.99, F1-Score: 0.99
+- **Weighted Avg:** Precision: 0.99, Recall: 0.99, F1-Score: 0.99
+
+#### GIN Test Classification Report
+
+| Disorder                           | Precision | Recall | F1-Score | Support |
+|------------------------------------|-----------|--------|----------|---------|
+| Addictive disorder                 | 0.62      | 0.76   | 0.68     | 45      |
+| Anxiety disorder                   | 0.81      | 0.83   | 0.82     | 41      |
+| Healthy control                    | 0.90      | 0.87   | 0.88     | 53      |
+| Mood disorder                      | 0.41      | 0.35   | 0.38     | 43      |
+| Obsessive compulsive disorder      | 0.98      | 0.96   | 0.97     | 55      |
+| Schizophrenia                      | 0.88      | 0.88   | 0.88     | 60      |
+| Trauma and stress related disorder | 0.81      | 0.78   | 0.80     | 55      |
+
+- **Overall Test Accuracy:** 79%
+- **Macro Avg:** Precision: 0.77, Recall: 0.78, F1-Score: 0.77
+- **Weighted Avg:** Precision: 0.79, Recall: 0.79, F1-Score: 0.79
+
 
 ## Early Stopping and Model Selection
 
@@ -106,7 +135,7 @@ Each model utilized early stopping to prevent overfitting, and the final test ac
 
 ## Conclusion
 
-GraphSAGE performed the best on this EEG classification task, achieving a test accuracy of 71.31% and strong F1-scores across various psychiatric disorder categories. This suggests that GraphSAGE’s sampling-based approach may be more effective for this EEG dataset compared to GCN and GIN.
+The GIN(Graph Isomorphism Network) model in particular achieved the highest classification performance, with a 99% train accuracy and 79% test accuracy on a diverse set of classes.
 
 ## Future Work
 
