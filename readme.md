@@ -1,163 +1,56 @@
-This project provides a graph-based structure for representing EEG data, leveraging node features, edge indices, and edge attributes. The graphs are constructed to enable analysis using Graph Neural Networks (GNNs) such as GCN, GAT, and GraphSAGE.
+# EEG Data Classification Using GNNs and Traditional Classifiers  
 
-## Graph Structure Overview
+This project explores the classification of EEG data into six different categories using both graph-based and traditional machine learning models. The implementation leverages **Graph Neural Networks (GNNs)** alongside traditional models to compare their performance across metrics like accuracy, precision, recall, and F1-score.  
 
-For each subject, the EEG data is structured as a graph with nodes, edges, and features. Below is the graph information for one subject:
+## **Models and Metrics**  
 
-- **Number of Nodes:** 19
-- **Number of Edges:** 171
-- **Node Feature Shape:** [19, 6]
-- **Edge Index Shape:** [2, 171]
-- **Edge Attribute Shape:** [171, 6]
-- **Graph Label:** 2
+The performance of six classifiers was compared, highlighting the superiority of the **GIN (Graph Isomorphism Network)** model for EEG data classification. Below are the mean metrics achieved by each model using **10-fold Cross-Validation (10CV):**  
 
-### Detailed Components
+| **Model**         | **Accuracy** | **Precision** | **Recall** | **F1-Score** |
+|--------------------|--------------|---------------|------------|--------------|
+| **GIN**           | 93.29        | 93.42         | 93.29      | 93.21        |
+| **KNN**           | 83.51        | 83.58         | 83.51      | 82.68        |
+| **SVM**           | 66.17        | 67.12         | 66.17      | 65.67        |
+| **Random Forest** | 92.57        | 92.66         | 92.57      | 92.50        |
+| **LSTM**          | 85.83        | 85.84         | 85.83      | 85.51        |
+| **GCN**           | 60.11        | 61.19         | 60.11      | 58.86        |  
 
-- **Nodes** represent EEG channels, with each node containing 6 features corresponding to specific frequency bands.
-- **Edges** connect pairs of EEG channels and capture inter-channel coherence as edge attributes.
-- **Edge Attributes** have a shape of `[171, 6]`, with each edge attribute containing 6 values, representing coherence values across bands.
+### **Key Observations**  
 
-## Models
+- **GIN** achieved the highest overall metrics, outperforming all other models in accuracy, precision, recall, and F1-score.  
+- **Random Forest** followed closely behind, indicating strong performance among traditional classifiers.  
+- **KNN and LSTM** demonstrated moderate performance, while **SVM** and **GCN** had lower classification results for this dataset.  
+- **10CV** ensured robust evaluation by splitting the dataset into 10 equal parts, using nine for training and one for validation in each iteration.  
 
-This project includes three GNN models for graph classification tasks:
-1. **GCN (Graph Convolutional Network)**
-2. **GraphSAGE**
-3. **GIN (Graph Isomorphism Network)**
+## **Graph-Based Data Structure**  
 
+The EEG dataset was structured as graphs to enable GNN-based analysis. Each graph includes:  
 
-## Results
+- **Nodes**: Represent EEG channels (19 nodes for 19 channels).  
+- **Edges**: Capture inter-channel relationships using coherence values (171 edges per graph).  
+- **Node Features**: Specific frequency band data for each EEG channel, resulting in a feature shape of `[19, 6]`.  
 
-### GCN Model
+### **Feature Structure**  
 
-- **Best Train Accuracy:** 68.48%
-- **Best Test Accuracy:** 52.27%
-- **Classification Report (Train)**:
-  
-  | Disorder                        | Precision | Recall | F1-score |
-  |---------------------------------|-----------|--------|----------|
-  | Addictive disorder              | 0.51      | 0.73   | 0.60     |
-  | Anxiety disorder                | 0.87      | 0.51   | 0.64     |
-  | Healthy control                 | 0.68      | 0.65   | 0.67     |
-  | Mood disorder                   | 0.42      | 0.74   | 0.53     |
-  | Obsessive compulsive disorder   | 0.96      | 0.35   | 0.51     |
-  | Schizophrenia                   | 0.62      | 0.67   | 0.64     |
-  | Trauma and stress related disorder | 0.83   | 0.65   | 0.73     |
-  
-  **Overall Accuracy (Train):** 61%
+Each graph consists of:  
 
-- **Classification Report (Test)**:
-  
-  | Disorder                        | Precision | Recall | F1-score |
-  |---------------------------------|-----------|--------|----------|
-  | Addictive disorder              | 0.28      | 0.52   | 0.36     |
-  | Anxiety disorder                | 0.70      | 0.47   | 0.56     |
-  | Healthy control                 | 0.53      | 0.58   | 0.55     |
-  | Mood disorder                   | 0.24      | 0.41   | 0.30     |
-  | Obsessive compulsive disorder   | 1.00      | 0.22   | 0.36     |
-  | Schizophrenia                   | 0.52      | 0.55   | 0.53     |
-  | Trauma and stress related disorder | 0.71   | 0.42   | 0.53     |
-  
-  **Overall Accuracy (Test):** 45%
+- **Node Features**: Six features per node, corresponding to frequency bands (e.g., delta, theta, alpha, beta, gamma, and a specific band).  
+- **Edge Attributes**: Six coherence values per edge for inter-channel relationships.  
+- **Graph Label**: One of six possible classes (target variable).  
 
-### GraphSAGE Model
+### **Graph Summary**  
 
-- **Best Train Accuracy:** 94.16%
-- **Best Test Accuracy:** 71.31%
-- **Classification Report (Train)**:
+- **Number of Nodes**: 19  
+- **Number of Edges**: 171  
+- **Node Feature Shape**: `[19, 6]`  
+- **Edge Attribute Shape**: `[171, 6]`  
+- **Graph Label**: Categorical (classes 0–5)  
 
-  | Disorder                        | Precision | Recall | F1-score |
-  |---------------------------------|-----------|--------|----------|
-  | Addictive disorder              | 0.87      | 0.94   | 0.90     |
-  | Anxiety disorder                | 0.94      | 0.85   | 0.89     |
-  | Healthy control                 | 0.83      | 0.95   | 0.88     |
-  | Mood disorder                   | 0.93      | 0.85   | 0.89     |
-  | Obsessive compulsive disorder   | 0.97      | 0.93   | 0.95     |
-  | Schizophrenia                   | 0.92      | 0.95   | 0.94     |
-  | Trauma and stress related disorder | 0.95   | 0.92   | 0.93     |
-  
-  **Overall Accuracy (Train):** 91%
+## **Visualization**  
 
-- **Classification Report (Test)**:
+Below are visualizations highlighting the performance comparison and graph data representation:  
 
-  | Disorder                        | Precision | Recall | F1-score |
-  |---------------------------------|-----------|--------|----------|
-  | Addictive disorder              | 0.64      | 0.68   | 0.66     |
-  | Anxiety disorder                | 0.73      | 0.68   | 0.71     |
-  | Healthy control                 | 0.63      | 0.78   | 0.70     |
-  | Mood disorder                   | 0.48      | 0.34   | 0.40     |
-  | Obsessive compulsive disorder   | 0.88      | 0.83   | 0.86     |
-  | Schizophrenia                   | 0.70      | 0.83   | 0.76     |
-  | Trauma and stress related disorder | 0.72   | 0.64   | 0.68     |
-  
-  **Overall Accuracy (Test):** 69%
-
-### GIN Model Performance
-
-- **Best Train Accuracy:** 99.39%
-- **Best Test Accuracy:** 78.98%
-
-#### GIN Train Classification Report
-
-| Disorder                           | Precision | Recall | F1-Score | Support |
-|------------------------------------|-----------|--------|----------|---------|
-| Addictive disorder                 | 0.96      | 1.00   | 0.98     | 218     |
-| Anxiety disorder                   | 1.00      | 1.00   | 1.00     | 219     |
-| Healthy control                    | 1.00      | 0.99   | 1.00     | 208     |
-| Mood disorder                      | 0.98      | 0.98   | 0.98     | 216     |
-| Obsessive compulsive disorder      | 1.00      | 0.97   | 0.99     | 208     |
-| Schizophrenia                      | 0.99      | 0.99   | 0.99     | 200     |
-| Trauma and stress related disorder | 1.00      | 1.00   | 1.00     | 203     |
-
-- **Overall Train Accuracy:** 99%
-- **Macro Avg:** Precision: 0.99, Recall: 0.99, F1-Score: 0.99
-- **Weighted Avg:** Precision: 0.99, Recall: 0.99, F1-Score: 0.99
-
-#### GIN Test Classification Report
-
-| Disorder                           | Precision | Recall | F1-Score | Support |
-|------------------------------------|-----------|--------|----------|---------|
-| Addictive disorder                 | 0.62      | 0.76   | 0.68     | 45      |
-| Anxiety disorder                   | 0.81      | 0.83   | 0.82     | 41      |
-| Healthy control                    | 0.90      | 0.87   | 0.88     | 53      |
-| Mood disorder                      | 0.41      | 0.35   | 0.38     | 43      |
-| Obsessive compulsive disorder      | 0.98      | 0.96   | 0.97     | 55      |
-| Schizophrenia                      | 0.88      | 0.88   | 0.88     | 60      |
-| Trauma and stress related disorder | 0.81      | 0.78   | 0.80     | 55      |
-
-- **Overall Test Accuracy:** 79%
-- **Macro Avg:** Precision: 0.77, Recall: 0.78, F1-Score: 0.77
-- **Weighted Avg:** Precision: 0.79, Recall: 0.79, F1-Score: 0.79
+![Model Performance Ranking](image.png)  
+![Graph Structure Example](image-1.png)  
 
 
-## Early Stopping and Model Selection
-
-Each model utilized early stopping to prevent overfitting, and the final test accuracy was recorded after early stopping was triggered.
-
-## Conclusion
-
-The GIN(Graph Isomorphism Network) model in particular achieved the highest classification performance, with a 99% train accuracy and 79% test accuracy on a diverse set of classes.
-
-## Future Work
-
-1. **Hyperparameter Tuning**: Explore different learning rates, batch sizes, and hidden dimensions.
-2. **Advanced Architectures**: Experiment with more advanced GNN architectures or attention-based models.
-3. **Feature Engineering**: Further explore feature extraction from EEG signals for improved classification.
-
-## How to Run
-
-1. Clone the repository.
-2. Install required dependencies.
-3. Execute the training script for the desired model.
-4. Monitor performance metrics and visualize classification reports for each model.
-
-## Dependencies
-
-- PyTorch
-- PyTorch Geometric
-- scikit-learn
-- numpy
-- pandas
-
-## License
-
-This project is licensed under the MIT License. See the `LICENSE` file for more information.
